@@ -1,32 +1,52 @@
 package com.testtasks.texthandler.models;
 
+import java.util.ArrayList;
+
 public class Section {
-    private int nestedLevel = 0;
-    private String str = "";
+    private Integer sectionId, sectionTitleStringIndex;
+    private ArrayList<Integer> stringsBodyIndices, nestedSectionsIndices;
 
-    Section(String str, int nestedLevel) {
-        this.nestedLevel = nestedLevel;
-        this.str = str;
+    public Section(Integer sectionId, Integer sectionTitleStringIndex, ArrayList<Integer> stringsBodyIndices, ArrayList<Integer> nestedSectionsIndices) {
+        this.sectionId = sectionId;
+        this.sectionTitleStringIndex = sectionTitleStringIndex;
+        this.stringsBodyIndices = stringsBodyIndices;
+        this.nestedSectionsIndices = nestedSectionsIndices;
     }
 
-    public int getNestedLevel() {
-        return nestedLevel;
+    public Integer getSectionId() {
+        return sectionId;
     }
 
-    public void setNestedLevel(int nestedLevel) {
-        this.nestedLevel = nestedLevel;
+    public void setSectionId(Integer sectionId) {
+        this.sectionId = sectionId;
     }
 
-    public String getStr() {
-        return str;
+    public Integer getSectionTitleStringIndex() {
+        return sectionTitleStringIndex;
     }
 
-    public void setStr(String str) {
-        this.str = str;
+    public void setSectionTitleStringIndex(Integer sectionTitleStringIndex) {
+        this.sectionTitleStringIndex = sectionTitleStringIndex;
+    }
+
+    public ArrayList<Integer> getNestedSectionsIndices() {
+        return nestedSectionsIndices;
+    }
+
+    public void setNestedSectionsIndices(ArrayList<Integer> nestedSectionsIndices) {
+        this.nestedSectionsIndices = nestedSectionsIndices;
+    }
+
+    public ArrayList<Integer> getStringsBodyIndices() {
+        return stringsBodyIndices;
+    }
+
+    public void setStringsBodyIndices(ArrayList<Integer> stringsBodyIndices) {
+        this.stringsBodyIndices = stringsBodyIndices;
     }
 
     @Override
     public String toString() {
-        return "nestedLevel: " + nestedLevel + " str: " + str;
+        return "{ sectionId: " + sectionId + " sectionTitleStringIndex: " + sectionTitleStringIndex + " stringsBodyIndices: " + stringsBodyIndices.toString() + " nestedSectionId: " + nestedSectionsIndices.toString() + " }";
     }
 }

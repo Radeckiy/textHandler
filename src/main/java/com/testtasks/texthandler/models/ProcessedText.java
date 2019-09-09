@@ -3,16 +3,19 @@ package com.testtasks.texthandler.models;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ProcessedText {
     @Id
     private ObjectId _id;
     private String[] text;
-    //private Section[] textStructure;
+    private ArrayList<Section> textStructure;
 
-    public ProcessedText(ObjectId _id, String[] text) {
+    public ProcessedText(ObjectId _id, String[] text, ArrayList<Section> textStructure) {
         this._id = _id;
         this.text = text;
-        //this.textStructure = textStructure;
+        this.textStructure = textStructure;
     }
 
     public String get_id() {
@@ -31,11 +34,16 @@ public class ProcessedText {
         this.text = text;
     }
 
-//    public Section[] getTextStructure() {
-//        return textStructure;
-//    }
-//
-//    public void setTextStructure(Section[] textStructure) {
-//        this.textStructure = textStructure;
-//    }
+    public ArrayList<Section> getTextStructure() {
+        return textStructure;
+    }
+
+    public void setTextStructure(ArrayList<Section> textStructure) {
+        this.textStructure = textStructure;
+    }
+
+    @Override
+    public String toString() {
+        return "text: " + Arrays.toString(text) + " \ntextStructure: " + textStructure.toString();
+    }
 }
