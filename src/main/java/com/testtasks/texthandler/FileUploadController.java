@@ -38,8 +38,8 @@ public class FileUploadController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ProcessedText createProcessedText(@RequestParam("file") MultipartFile file) {
         ProcessedText processedText = new ProcessedText(ObjectId.get(),
-                sliceTextIntoStrings(readFile(file).replace("#", "").trim()),
-                getSectionsFromStrings(sliceTextIntoStrings(readFile(file))));
+                Arrays.stream(sliceTextIntoStringsSections(readFile(file))).map(s -> s.replace("#", "")).toArray(String[]::new),
+                getSectionsFromStrings(sliceTextIntoStringsSections(readFile(file))));
         repository.save(processedText);
         return processedText;
     }
@@ -70,31 +70,17 @@ public class FileUploadController {
 
     private ArrayList<Section> getSectionsFromStrings(String[] strings) {
         ArrayList<Section> result = new ArrayList<>();
-
         for (int i = 0; i < strings.length; i++) {
             int n = getNestedLevel(strings[i]), k = 1;
             if (n >= 1) {
-                ArrayList<Integer> stringsBodyIndices = new ArrayList<>(), nestedSectionsIndices = new ArrayList<>();
-                while (getNestedLevel(strings[i + k]) >= n + 1) {
+                ArrayList<Integer> nestedSectionsIndices = new ArrayList<>();
+                while (i + k <= strings.length - 1 && getNestedLevel(strings[i + k]) >= n + 1) {
                     if (getNestedLevel(strings[i + k]) == n + 1) {
-                        stringsBodyIndices.add(i + k);
+                        nestedSectionsIndices.add(i + k);
                     }
                     k++;
                 }
-                if(stringsBodyIndices.size() > 0 || n == 1)
-                    result.add(new Section(result.size(), i, stringsBodyIndices, nestedSectionsIndices));
-            }
-        }
-
-        for(int i = 0; i < result.size()-1; i++) {
-            int k = 1;
-            if (result.get(i).getStringsBodyIndices().contains(result.get(i + k).getSectionTitleStringIndex())) {
-                ArrayList<Integer> nestedSectionsIndices = new ArrayList<>();
-                while(result.get(i).getStringsBodyIndices().contains(result.get(i + k).getSectionTitleStringIndex())) {
-                    nestedSectionsIndices.add(i + k);
-                    k++;
-                }
-                result.get(i).setNestedSectionsIndices(nestedSectionsIndices);
+                result.add(new Section(result.size(), i, nestedSectionsIndices));
             }
         }
         return result;
@@ -102,15 +88,33 @@ public class FileUploadController {
 
     private Integer getNestedLevel(String str) {
         int k = 0;
-        if (str.charAt(0) == '#') {
-            while (str.charAt(k) == '#') {
+        if (str.trim().charAt(0) == '#') {
+            while (str.trim().charAt(k) == '#') {
                 k++;
             }
         }
         return k;
     }
 
-    private String[] sliceTextIntoStrings(String text) {
-        return text.split("\n");
+    private String[] sliceTextIntoStringsSections(String text) {
+        //return Arrays.stream(text.split("#")).map(String::trim).filter(s -> s.length() > 0).toArray(String[]::new);
+
+        String[] stringsArray = text.split("\n");
+        ArrayList<String> result = new ArrayList<>();
+        StringBuilder s = new StringBuilder();
+
+        for (String string : stringsArray) {
+            if (string.length() > 0 && string.trim().charAt(0) == '#') {
+                if (s.toString().length() > 0)
+                    result.add(s.toString().trim());
+                s = new StringBuilder(string);
+            }
+            else
+                s.append("\n").append(string);
+        }
+        if (s.toString().length() > 0)
+            result.add(s.toString().trim());
+
+        return result.toArray(new String[0]);
     }
 }

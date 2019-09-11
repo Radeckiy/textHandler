@@ -3,13 +3,12 @@ package com.testtasks.texthandler.models;
 import java.util.ArrayList;
 
 public class Section {
-    private Integer sectionId, sectionTitleStringIndex;
-    private ArrayList<Integer> stringsBodyIndices, nestedSectionsIndices;
+    private Integer sectionId, stringBodyIndex;
+    private ArrayList<Integer> nestedSectionsIndices;
 
-    public Section(Integer sectionId, Integer sectionTitleStringIndex, ArrayList<Integer> stringsBodyIndices, ArrayList<Integer> nestedSectionsIndices) {
+    public Section(Integer sectionId, Integer stringBodyIndex, ArrayList<Integer> nestedSectionsIndices) {
         this.sectionId = sectionId;
-        this.sectionTitleStringIndex = sectionTitleStringIndex;
-        this.stringsBodyIndices = stringsBodyIndices;
+        this.stringBodyIndex = stringBodyIndex;
         this.nestedSectionsIndices = nestedSectionsIndices;
     }
 
@@ -21,14 +20,6 @@ public class Section {
         this.sectionId = sectionId;
     }
 
-    public Integer getSectionTitleStringIndex() {
-        return sectionTitleStringIndex;
-    }
-
-    public void setSectionTitleStringIndex(Integer sectionTitleStringIndex) {
-        this.sectionTitleStringIndex = sectionTitleStringIndex;
-    }
-
     public ArrayList<Integer> getNestedSectionsIndices() {
         return nestedSectionsIndices;
     }
@@ -37,16 +28,16 @@ public class Section {
         this.nestedSectionsIndices = nestedSectionsIndices;
     }
 
-    public ArrayList<Integer> getStringsBodyIndices() {
-        return stringsBodyIndices;
+    public Integer getStringBodyIndex() {
+        return stringBodyIndex;
     }
 
-    public void setStringsBodyIndices(ArrayList<Integer> stringsBodyIndices) {
-        this.stringsBodyIndices = stringsBodyIndices;
+    public void setStringBodyIndex(Integer stringBodyIndex) {
+        this.stringBodyIndex = stringBodyIndex;
     }
 
     @Override
     public String toString() {
-        return "{ sectionId: " + sectionId + " sectionTitleStringIndex: " + sectionTitleStringIndex + " stringsBodyIndices: " + stringsBodyIndices.toString() + " nestedSectionId: " + nestedSectionsIndices.toString() + " }";
+        return "{ sectionId: " + sectionId + " stringBodyIndex: " + stringBodyIndex + " nestedSectionsIndices: " + nestedSectionsIndices.toString() + " }";
     }
 }
